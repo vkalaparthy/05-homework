@@ -26,8 +26,8 @@ $(document).ready(function() {
     var currentHour = moment().hours();
     console.log('current hour:', currentHour);
 
-    getStoredEvents();
-    console.log(eventsArray);
+    //getStoredEvents();  Don't need to do this here
+    //console.log(eventsArray);
 
     // loop over time blocks
     $(".time-block").each(function() {
@@ -61,6 +61,7 @@ $(document).ready(function() {
     });
   }
 
+  getStoredEvents();
   hourUpdater();
 
   function addPast(tempThis) {
