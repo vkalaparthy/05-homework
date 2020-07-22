@@ -35,15 +35,18 @@ $(document).ready(function() {
 
       console.log("block hour:", blockHour);
       //console.log ("this is "+this);
+      var currentThis = this;
 
       // check if we've moved past this time
 
+      // I can combine all these to one function 
+      //but leaving it this way for time being
       if (currentHour > blockHour) {
-        addPast(blockHour);
+        addPast(currentThis);
       } else if (currentHour === blockHour) {
-        addPresent(currentHour);
+        addPresent(currentThis);
       } else {
-        addFuture(blockHour)
+        addFuture(currentThis)
       }
   
       // if the current hour is greater than the block hour
@@ -60,10 +63,11 @@ $(document).ready(function() {
 
   hourUpdater();
 
-  function addPast(bt) {
+  function addPast(tempThis) {
     //grab all previous times and chnage the color to gray
-    //console.log("this : "+this); test
-    var getId = "#hour-"+bt;
+    //Also upload the event for this time period from localStorage
+    //console.log("In addPast id is ** " + $(tempThis).attr("id"));
+    var getId = "#" + $(tempThis).attr("id");
     console.log("Id is "+getId);
     for (var i = 0; i<eventsArray.length; i++) {
       var timePeriod = eventsArray[i].eTime;
@@ -75,11 +79,10 @@ $(document).ready(function() {
     $(getId).find("textarea").css("background", "lightgray");
   };
 
-  function addPresent(ct) {
-    var getId = "#hour-"+ct;
+  function addPresent(tempThis) {
+    //var getId = "#hour-"+ct;
+    var getId = "#" + $(tempThis).attr("id");
     console.log("Id is "+getId);
-    //var grabTextarea = ".col-md-"+ct;
-    //$("textarea").text("I am here");
 
     for (var i = 0; i<eventsArray.length; i++) {
       var timePeriod = eventsArray[i].eTime;
@@ -91,11 +94,11 @@ $(document).ready(function() {
     $(getId).find("textarea").css("background", "red");
   };
 
-  function addFuture(bt) {
-    var getId = "#hour-"+bt;
+  function addFuture(tempThis) {
+    //var getId = "#hour-"+bt; I was using blocktime before
+    var getId = "#" + $(tempThis).attr("id");
     console.log("Id is "+getId);
-    //var grabTextarea = ".col-md-"+bt;
-    // *****
+    // ***** update events from localStorage
     for (var i = 0; i<eventsArray.length; i++) {
       var timePeriod = eventsArray[i].eTime;
       if(getId.includes(timePeriod)) {
@@ -121,7 +124,7 @@ $(document).ready(function() {
 
   setInterval (function() {
     hourUpdater();
-    console.log("In setInterval");
+    //console.log("In setInterval");
   }, 15000);
 
   // display current day on page
