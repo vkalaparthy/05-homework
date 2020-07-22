@@ -10,14 +10,7 @@ $(document).ready(function() {
 
     console.log('value:', value);
     console.log('time:', time);
-
-    var eventInfoObj = {
-      eValue: value,
-      eTime: time
-    }
-    eventsArray.push(eventInfoObj);
-    localStorage.setItem("calEventsArray", JSON.stringify(eventsArray));
-    // save the value in localStorage as time
+    addToEventArray(value, time);
     
   });
 
@@ -26,7 +19,7 @@ $(document).ready(function() {
     var currentHour = moment().hours();
     console.log('current hour:', currentHour);
 
-    //getStoredEvents();  Don't need to do this here
+    //getStoredEvents();
     //console.log(eventsArray);
 
     // loop over time blocks
@@ -98,7 +91,7 @@ $(document).ready(function() {
   function addFuture(tempThis) {
     //var getId = "#hour-"+bt; I was using blocktime before
     var getId = "#" + $(tempThis).attr("id");
-    console.log("Id is "+getId);
+    //console.log("Id is "+getId);
     // ***** update events from localStorage
     for (var i = 0; i<eventsArray.length; i++) {
       var timePeriod = eventsArray[i].eTime;
@@ -110,6 +103,31 @@ $(document).ready(function() {
     // ***** 
     //$(getId).find("textarea").text("Future");
     $(getId).find("textarea").css("background", "#4BF521");
+  };
+
+  function addToEventArray(value1, time1) {
+    //First check if there is something in the same time-period
+    //This will remove the element from the list if the event has been removed
+    //Adds to events Array if there is change in the event or a new event
+    console.log("In addToEventArray");
+    console.log(eventsArray.length);
+    var eventInfoObj = {
+      eValue: value1,
+      eTime: time1
+    }
+    if (eventsArray.length !== 0 ) {
+      for (var i = 0; i<eventsArray.length; i++) {
+        var timePeriod = eventsArray[i].eTime; 
+        if (timePeriod === time1) { // replace at this index splice and push!
+          eventsArray.splice(i, 1);
+        } 
+      }
+    }  // If you come out of this "for" loop, it means this time-slot is not in Array 
+    if (value1 !== "") {
+      eventsArray.push(eventInfoObj);
+      //localStorage.setItem("calEventsArray", JSON.stringify(eventsArray));
+    }
+    localStorage.setItem("calEventsArray", JSON.stringify(eventsArray));
   };
 
   // set up interval to check if current time needs to be updated
