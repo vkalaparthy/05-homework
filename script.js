@@ -19,9 +19,6 @@ $(document).ready(function() {
     var currentHour = moment().hours();
     console.log('current hour:', currentHour);
 
-    //getStoredEvents();
-    //console.log(eventsArray);
-
     // loop over time blocks
     $(".time-block").each(function() {
       var blockHour = parseInt($(this).attr("id").split("-")[1]);
@@ -42,15 +39,6 @@ $(document).ready(function() {
         addFuture(currentThis)
       }
   
-      // if the current hour is greater than the block hour
-      // then add class "past"
-
-      // if they are equal
-      // then remove class "past" and add class "present"
-
-      // else
-      // remove class "past", remove class "present", add class "future"
-      
     });
   }
 
@@ -130,9 +118,6 @@ $(document).ready(function() {
     localStorage.setItem("calEventsArray", JSON.stringify(eventsArray));
   };
 
-  // set up interval to check if current time needs to be updated
-  // which means execute hourUpdater function every 15 seconds
-
   // load any saved data from localStorage
   function getStoredEvents() {
     var storedEvents = JSON.parse(localStorage.getItem("calEventsArray"));
@@ -140,6 +125,9 @@ $(document).ready(function() {
         eventsArray = storedEvents;
     }
   };
+
+  // set up interval to check if current time needs to be updated
+  // which means execute hourUpdater function every 15 seconds
 
   setInterval (function() {
     hourUpdater();
