@@ -25,19 +25,19 @@ $(document).ready(function() {
 
       console.log("block hour:", blockHour);
       //console.log ("this is "+this);
-      var currentThis = this;
+      var currentId = $(this).attr("id");
 
-      // check if we've moved past this time
+      addEventsToTimeBlock (currentHour, blockHour, currentId)
 
       // I can combine all these to one function 
       //but leaving it this way for time being
-      if (currentHour > blockHour) {
-        addPast(currentThis);
-      } else if (currentHour === blockHour) {
-        addPresent(currentThis);
-      } else {
-        addFuture(currentThis)
-      }
+      // if (currentHour > blockHour) {
+      //   addPast(currentThis);
+      // } else if (currentHour === blockHour) {
+      //   addPresent(currentThis);
+      // } else {
+      //   addFuture(currentThis)
+      // }
   
     });
   }
@@ -45,11 +45,8 @@ $(document).ready(function() {
   getStoredEvents();
   hourUpdater();
 
-  function addPast(tempThis) {
-    //grab all previous times and chnage the color to gray
-    //Also upload the event for this time period from localStorage
-    //console.log("In addPast id is ** " + $(tempThis).attr("id"));
-    var getId = "#" + $(tempThis).attr("id");
+  function addEventsToTimeBlock(ct, bt, blockId) {
+    var getId = "#" + blockId;
     console.log("Id is "+getId);
     for (var i = 0; i<eventsArray.length; i++) {
       var timePeriod = eventsArray[i].eTime;
@@ -58,40 +55,14 @@ $(document).ready(function() {
         console.log("Adding event to calender "+eventsArray[i].eValue);
       }
     }
-    $(getId).find("textarea").css("background", "lightgray");
-  };
-
-  function addPresent(tempThis) {
-    //var getId = "#hour-"+ct;
-    var getId = "#" + $(tempThis).attr("id");
-    console.log("Id is "+getId);
-
-    for (var i = 0; i<eventsArray.length; i++) {
-      var timePeriod = eventsArray[i].eTime;
-      if(getId.includes(timePeriod)) {
-        $(getId).find("textarea").text(eventsArray[i].eValue);
-        console.log("Adding event to calender "+eventsArray[i].eValue);
-      }
+    if (ct > bt) {
+      $(getId).find("textarea").css("background", "lightgray");
+    } else if (ct === bt) {
+      $(getId).find("textarea").css("background", "red");
+    } else {
+      $(getId).find("textarea").css("background", "#4BF521");
     }
-    $(getId).find("textarea").css("background", "red");
-  };
-
-  function addFuture(tempThis) {
-    //var getId = "#hour-"+bt; I was using blocktime before
-    var getId = "#" + $(tempThis).attr("id");
-    //console.log("Id is "+getId);
-    // ***** update events from localStorage
-    for (var i = 0; i<eventsArray.length; i++) {
-      var timePeriod = eventsArray[i].eTime;
-      if(getId.includes(timePeriod)) {
-        $(getId).find("textarea").text(eventsArray[i].eValue);
-        console.log("Adding event to calender "+eventsArray[i].eValue);
-      }
-    }
-    // ***** 
-    //$(getId).find("textarea").text("Future");
-    $(getId).find("textarea").css("background", "#4BF521");
-  };
+  }
 
   function addToEventArray(value1, time1) {
     //First check if there is something in the same time-period
@@ -106,7 +77,7 @@ $(document).ready(function() {
     if (eventsArray.length !== 0 ) {
       for (var i = 0; i<eventsArray.length; i++) {
         var timePeriod = eventsArray[i].eTime; 
-        if (timePeriod === time1) { // replace at this index splice and push!
+        if (timePeriod === time1) { // index splice 
           eventsArray.splice(i, 1);
         } 
       }
