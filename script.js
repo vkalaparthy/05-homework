@@ -27,18 +27,8 @@ $(document).ready(function() {
       //console.log ("this is "+this);
       var currentId = $(this).attr("id");
 
-      addEventsToTimeBlock (currentHour, blockHour, currentId)
+      addEventsToTimeBlock (currentHour, blockHour, currentId);
 
-      // I can combine all these to one function 
-      //but leaving it this way for time being
-      // if (currentHour > blockHour) {
-      //   addPast(currentThis);
-      // } else if (currentHour === blockHour) {
-      //   addPresent(currentThis);
-      // } else {
-      //   addFuture(currentThis)
-      // }
-  
     });
   }
 
